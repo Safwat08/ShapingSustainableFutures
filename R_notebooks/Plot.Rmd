@@ -1,0 +1,44 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you execute code within the notebook, the results appear beneath the code. 
+
+Try executing this chunk by clicking the *Run* button within the chunk or by placing your cursor inside it and pressing *Cmd+Shift+Enter*. 
+
+```{r}
+# Exhibit 2 Nordic
+data <- readRDS('../Data/Exhibit2_AllNordic.rds')
+
+# reshape the data to a long format
+df_long <- pivot_longer(data, 
++                         cols = c(1980:2028), 
++                         names_to = "year", 
++                         values_to = "value")
+
+# create the faceted plot
+ggplot(df_long, aes(x = year, y = value, color = Country, group = Country)) +
+    geom_line() +
+    labs(x = "Year", y = "Value") +
+    facet_wrap(~Subject, scales = "free_y")
+```
+
+
+```{r}
+# Exhibit 2 Nordic
+data <- readRDS('../Data/Exhibit2_AllNordic.rds')
+
+# reshape the data to a long format
+df_long <- pivot_longer(data, 
+                        cols = !Subject, 
+                         names_to = "year", 
+                         values_to = "value")
+
+# create the faceted plot
+ggplot(df_long, aes(x = year, y = value, group = Subject)) +
+    geom_line() +
+    labs(x = "Year", y = "Value") +
+    facet_wrap(~Subject, scales = "free_y") +
+  theme(text = element_text(size = 12))
+```
